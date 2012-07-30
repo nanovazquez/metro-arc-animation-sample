@@ -1,0 +1,54 @@
+﻿<Page
+    x:Class="ArcAnimationSample.MainPage"
+    IsTabStop="false"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArcAnimationSample"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="120"></RowDefinition>
+            <RowDefinition Height="150"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border Height="400" Width="400"  Margin="50"  CornerRadius="50">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF473B3B"/>
+                    <GradientStop Color="#FF6E6767" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Path x:Name="progressPath" Stroke="Gold" StrokeThickness="5" 
+                      HorizontalAlignment="Center" VerticalAlignment="Center" Height="305" Width="305"
+                      Data="m 150,0 A 150,0 0 0 0 150,0 A 150,150 0 0 0 150,0" />
+                <TextBlock x:Name="statusMessage"  FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center">Processing..</TextBlock>
+            </Grid>
+        </Border>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" HorizontalAlignment="Center" Width="200">
+                <TextBlock FontSize="36" HorizontalAlignment="Center">Radius</TextBlock>
+                <TextBox x:Name="radius" FontSize="36" TextAlignment="Right" Text="150"></TextBox>
+            </StackPanel>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center" Width="200">
+                <TextBlock FontSize="36" HorizontalAlignment="Center">Final angle</TextBlock>
+                <TextBox x:Name="finalAngle" FontSize="36" TextAlignment="Right" Text="360.0"></TextBox>
+            </StackPanel>
+            <StackPanel Grid.Column="2" HorizontalAlignment="Center" Width="200">
+                <TextBlock FontSize="36" HorizontalAlignment="Center">Time step</TextBlock>
+                <TextBox x:Name="timeStep" FontSize="36" TextAlignment="Right" Text="0.05"></TextBox>
+            </StackPanel>
+        </Grid>
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button x:Name="startButton" FontSize="36" Click="startButton_Click">Start!</Button>
+        </StackPanel>
+    </Grid>
+</Page>
