@@ -21,8 +21,11 @@ namespace ArcAnimationSample
             Storyboard.SetTarget(progressAnimation, progressPath);
             Storyboard.SetTargetProperty(progressAnimation, "(Path.Data)");
 
+            // for a smoother animation
+            double multiplier = 3;
+
             Point center = new Point(radius, radius);
-            for (int i = 0; i <= finalAngle; i++)
+            for (int i = 0; i <= finalAngle * multiplier; i++)
             {
                 var discreteObjectKeyFrame = new DiscreteObjectKeyFrame();
                 discreteObjectKeyFrame.KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(i * timeStep));
@@ -30,23 +33,26 @@ namespace ArcAnimationSample
                 // create points for each ArcSegment
                 Point firstArcPoint = new Point(radius, 0);
                 Point secondArcPoint = new Point(radius, 0);
-
-                if (i < 180)
+                Point calculatedPoint = new Point()
                 {
-                    // calculate a new point of the first ArcSegment
-                    firstArcPoint.X = Math.Cos(Math.PI * (270 - i) / 180.0) * radius + center.X;
-                    firstArcPoint.Y = Math.Sin(Math.PI * (270 - i) / 180.0) * radius + center.Y;
-                    secondArcPoint = firstArcPoint;
+                    X = Math.Cos(Math.PI * (270 - i / multiplier) / 180.0) * radius + center.X,
+                    Y = Math.Sin(Math.PI * (270 - i / multiplier) / 180.0) * radius + center.Y
+                };
+
+                if (i < 180 * multiplier)
+                {
+                    // use the calculated point for the first and second arc segments
+                    firstArcPoint = calculatedPoint;
+                    secondArcPoint = calculatedPoint;
                 }
                 else
                 {
-                    // leave the first ArcSegment static and calculate a new point of the second
+                    // leave the first arc segment static and use the calculated point for the second
                     firstArcPoint = new Point() { X = radius, Y = radius * 2 };
-                    secondArcPoint.X = Math.Cos(Math.PI * (270 - i) / 180.0) * radius + center.X;
-                    secondArcPoint.Y = Math.Sin(Math.PI * (270 - i) / 180.0) * radius + center.Y;
+                    secondArcPoint = calculatedPoint;
                 }
 
-                // for instance, a complete circle with 150 as radius : "m 150,0 A 150,150 0 0 0 150,300 A 150,150 0 0 0 150,0"
+                // for instance, a complete circle with a radius of 150: "m 150,0 A 150,150 0 0 0 150,300 A 150,150 0 0 0 150,0"
                 string dataValue = "m {0},{1} A {2},{2} 0 0 0 {3},{4} A {2},{2} 0 0 0 {5},{6}";
                 discreteObjectKeyFrame.Value = string.Format(dataValue, initialPoint.X, initialPoint.Y, radius, firstArcPoint.X, firstArcPoint.Y, secondArcPoint.X, secondArcPoint.Y);
                 progressAnimation.KeyFrames.Add(discreteObjectKeyFrame);
